@@ -73,6 +73,7 @@ public class VisionController {
 	public MSVision vision(String imageToAnalyze) throws Exception {
 		// String imageToAnalyze="C:\\Users\\admin\\Pictures\\error1.jpg";
 		File file1 = new File("C:\\Users\\admin\\Documents\\MicrosoftVisionAPI\\subscriptionKey.txt");
+		String filePath = "C:\\Users\\admin\\Pictures\\error1.jpg";
 		// String str1 = FileUtils.readFileToString(file);
 
 		String uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/analyze";
@@ -101,9 +102,13 @@ public class VisionController {
 		request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
 		// Request body.
-		File file = new File("C:\\Users\\admin\\Pictures\\error1.jpg");
-		FileEntity reqEntity = new FileEntity(file);
-		request.setEntity(reqEntity);
+		//File file = new File("C:\\Users\\admin\\Pictures\\error1.jpg");
+		//FileEntity reqEntity = new FileEntity(file);
+		
+		
+		Path path = Paths.get(filePath);
+		byte[] imgBytes = Files.readAllBytes(path);
+		request.setEntity(imgBytes);
 
 		// StringEntity requestEntity = new StringEntity("{\"url\":\"" + imageToAnalyze
 		// + "\"}");
@@ -113,7 +118,6 @@ public class VisionController {
 		HttpResponse response = httpClient.execute(request);
 		HttpEntity entity = response.getEntity();
 
-		// if (entity != null) {
 		if (entity != null) {
 			// Format and display the JSON response.
 			// String jsonString = EntityUtils.toString(entity);
